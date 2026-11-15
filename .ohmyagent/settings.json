@@ -1,0 +1,12 @@
+{
+  "permission_rules": [
+    {
+      "tool": "Read",
+      "decision": "allow"
+    },
+    {
+      "tool": "PowerShell(try *)",
+      "decision": "allow"
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: gameop-backend
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/gameop}
+    username: ${DATABASE_USERNAME:gameop}
+    password: ${DATABASE_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  cache:
+    type: caffeine
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://127.0.0.1:5173}
+  jwt:
+    secret: ${JWT_SECRET:dev-only-change-me-use-at-least-32-bytes!}
+    expiration-seconds: ${JWT_EXPIRATION_SECONDS:86400}
+
+twitch:
+  client-id: ${TWITCH_CLIENT_ID:}
+  client-secret: ${TWITCH_CLIENT_SECRET:}
+  token-url: https://id.twitch.tv/oauth2/token
+
+igdb:
+  base-url: https://api.igdb.com/v4
+  catalog-size: 500
+  page-size: 500
+  cache-ttl-minutes: 360

@@ -1,0 +1,31 @@
+# Build
+target/
+!.mvn/wrapper/maven-wrapper.jar
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.classpath
+.project
+.settings/
+.vscode/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Env / secrets
+.env
+*.env.local
+application-local.yml
+
+# Logs
+*.log
+logs/
+
+# Uploads locais do editor
+.monkeycode/
