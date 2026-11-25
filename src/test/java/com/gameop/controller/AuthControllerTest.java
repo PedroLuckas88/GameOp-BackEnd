@@ -49,7 +49,7 @@ class AuthControllerTest {
                 .get("accessToken")
                 .asText();
 
-        mockMvc.perform(get("/api/users/me").header("Authorization", "Bearer " + token))
+        mockMvc.perform(get("/api/auth/me").header("Authorization", "Bearer " + token))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.username").value("caio"))
                 .andExpect(jsonPath("$.email").value("caio@example.com"))
@@ -57,18 +57,24 @@ class AuthControllerTest {
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new LoginRequest("caio@example.com", "abcd"))))
+                        .content(objectMapper.writeValueAsString(new LoginRequest("caio", null, "abcd"))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.accessToken").isNotEmpty());
+
+        mockMvc.perform(post("/api/auth/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(new LoginRequest(null, "caio@example.com", "abcd"))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.accessToken").isNotEmpty());
 
         mockMvc.perform(post("/api/auth/logout").header("Authorization", "Bearer " + token))
                 .andExpect(status().isNoContent());
 
-        mockMvc.perform(get("/api/users/me")).andExpect(status().isUnauthorized());
+        mockMvc.perform(get("/api/auth/me")).andExpect(status().isUnauthorized());
 
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new LoginRequest("caio@example.com", "errada"))))
+                        .content(objectMapper.writeValueAsString(new LoginRequest("caio", null, "errada"))))
                 .andExpect(status().isUnauthorized());
     }
 

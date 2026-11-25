@@ -45,6 +45,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/games", "/api/games/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews/recent", "/api/lists/recent").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/lists/me").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/lists/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register", "/api/auth/login").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

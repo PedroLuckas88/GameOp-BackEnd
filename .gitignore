@@ -1,4 +1,4 @@
-# Build
+docker compose ps# Build
 target/
 !.mvn/wrapper/maven-wrapper.jar
 .mvn/wrapper/maven-wrapper.jar

@@ -77,7 +77,7 @@ public final class IgdbQueries {
             "Stellar Blade");
 
     public static String popularQuery(int limit, int offset) {
-        return "where cover != null & version_parent = null & category = 0"
+        return "where cover != null & version_parent = null & game_type = 0"
                 + " & platforms = (" + PLATFORMS + ")"
                 + " & total_rating_count > 15"
                 + "; sort total_rating_count desc;"
@@ -89,7 +89,7 @@ public final class IgdbQueries {
                 .map(name -> "name ~ *\"" + name.replace("\"", "") + "\"*")
                 .reduce((a, b) -> a + " | " + b)
                 .orElse("name != null");
-        return "where cover != null & version_parent = null & category = 0"
+        return "where cover != null & version_parent = null & game_type = 0"
                 + " & platforms = (" + PLATFORMS + ")"
                 + " & (" + orNames + ")"
                 + "; sort total_rating_count desc;"
@@ -99,7 +99,7 @@ public final class IgdbQueries {
     public static String searchQuery(String term, int limit) {
         String safe = term.replace("\"", "").replace(";", "");
         return "search \"" + safe + "\";"
-                + " where cover != null & version_parent = null & category = 0;"
+                + " where cover != null & version_parent = null & game_type = 0;"
                 + " limit " + limit + ";";
     }
 

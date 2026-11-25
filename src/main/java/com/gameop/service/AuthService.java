@@ -49,15 +49,34 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
-        String email = request.email().trim().toLowerCase();
-        User user = userRepository
-                .findByEmailIgnoreCase(email)
-                .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos."));
+        User user = findForLogin(request);
 
         if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
-            throw new ApiException(HttpStatus.UNAUTHORIZED, "E-mail ou senha inválidos.");
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos.");
         }
         return toAuthResponse(user);
+    }
+
+    private User findForLogin(LoginRequest request) {
+        String email = request.email() == null ? "" : request.email().trim();
+        String username = request.username() == null ? "" : request.username().trim();
+
+        if (!email.isEmpty()) {
+            return userRepository
+                    .findByEmailIgnoreCase(email)
+                    .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos."));
+        }
+        if (!username.isEmpty()) {
+            if (username.contains("@")) {
+                return userRepository
+                        .findByEmailIgnoreCase(username)
+                        .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos."));
+            }
+            return userRepository
+                    .findByUsernameIgnoreCase(username)
+                    .orElseThrow(() -> new ApiException(HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos."));
+        }
+        throw new ApiException(HttpStatus.BAD_REQUEST, "Informe o usuário ou o e-mail.");
     }
 
     public UserResponse toUserResponse(User user) {

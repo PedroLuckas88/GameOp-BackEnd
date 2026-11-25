@@ -17,6 +17,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Entity
 @Table(
@@ -40,7 +42,8 @@ public class Review {
     @Column(name = "igdb_game_id", nullable = false)
     private Long igdbGameId;
 
-    @Column(nullable = false, columnDefinition = "smallint")
+    @JdbcTypeCode(SqlTypes.SMALLINT)
+    @Column(nullable = false)
     private Integer rating;
 
     @Column(length = 1000)
